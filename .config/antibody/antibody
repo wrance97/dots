@@ -1,0 +1,9 @@
+# zsh plugins for use with Antibody
+# Antibody must be installed separately
+# It can be found here: https://getantibody.github.io/
+
+# MUST RUN THE FOLLOWING COMMAND AFTER EDITING
+# antibody bundle < ~/.config/antibody/antibody > ~/.config/antibody/antibody.sh
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-completions
