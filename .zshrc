@@ -1,6 +1,6 @@
 # Antibody must be installed separately
 # It can be found here: https://getantibody.github.io/
-source ~/dots/zsh/antibody.sh
+source ~/.config/zsh/antibody/antibody.sh
 
 # Aliases
 alias home="cd ~"
