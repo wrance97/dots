@@ -17,7 +17,7 @@ alias dot="git --git-dir=$HOME/.dots/ --work-tree=$HOME"
 setopt autocd
 
 # Set pure ZSH as a prompt
-fpath+=$HOME/builds/pure
+fpath+=$HOME/.config/zsh/pure
 autoload -U promptinit; promptinit
 prompt pure
 
