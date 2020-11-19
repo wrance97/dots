@@ -48,7 +48,7 @@ prompt_pure_check_cmd_exec_time() {
 	integer elapsed
 	(( elapsed = EPOCHSECONDS - ${prompt_pure_cmd_timestamp:-$EPOCHSECONDS} ))
 	typeset -g prompt_pure_cmd_exec_time=
-	(( false )) && {
+	(( elapsed > ${PURE_CMD_MAX_EXEC_TIME:-5} )) && {
 		prompt_pure_human_time_to_var $elapsed "prompt_pure_cmd_exec_time"
 	}
 }

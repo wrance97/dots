@@ -1,5 +1,7 @@
 # Antibody must be installed separately
 # It can be found here: https://getantibody.github.io/
+# Make sure ~/.config/zsh/antibody/antibody exists, then run the following
+# antibody bundle < ~/.config/zsh/antibody/antibody > ~/.config/zsh/antibody/antibody.sh
 source ~/.config/zsh/antibody/antibody.sh
 
 # Aliases
@@ -19,6 +21,10 @@ setopt autocd
 # Set pure ZSH as a prompt
 fpath+=$HOME/.config/zsh/pure
 autoload -U promptinit; promptinit
+# Place pure options here
+PURE_CMD_MAX_EXEC_TIME=300
+PURE_GIT_UNTRACKED_DIRTY=0
+zstyle :prompt:pure:git:stash show yes
 prompt pure
 
 # Base16 Shell must be installed separately

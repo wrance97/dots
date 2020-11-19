@@ -13,15 +13,15 @@ let g:fzf_layout = { 'down': '~20%' }
 " Ack
 " Ag must be installed outside of vim before Ack can be used
 " It can be found here: https://github.com/ggreer/the_silver_searcher
-let g:ackprg = 'ag --vimgrep'
+let g:ackprg = 'ag --nogroup --nocolor --column'
 
 " Taboo
 let g:taboo_modified_tab_flag = " +"
 let g:taboo_renamed_tab_format = " %l%m "
 
 " Goyo/Limelight combo
-" autocmd! User GoyoEnter Limelight0.8 
-" autocmd! User GoyoLeave Limelight! 
+" autocmd! User GoyoEnter Limelight0.8
+" autocmd! User GoyoLeave Limelight!
 
 " Prevent default git gutter mappings
 let g:gitgutter_map_keys = 0
@@ -59,16 +59,15 @@ Plug 'tpope/vim-obsession'
 " Plug 'tpope/vim-fugitive'
 
 " THE LEGEND
-Plug 'junegunn/vim-slash'
+Plug 'junegunn/vim-slash' " Comment out gd mapping to use coc gd
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/vim-peekaboo'
 " Plug 'junegunn/limelight.vim'
-" Plug 'junegunn/vim-journal'
-" Plug 'junegunn/vim-peekaboo'
 
 " Language specific plugins
-Plug 'ap/vim-css-color'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+" Plug 'ap/vim-css-color'
+" Plug 'pangloss/vim-javascript'
+" Plug 'mxw/vim-jsx'
 " Plug 'leafgarland/typescript-vim'
 " Plug 'posva/vim-vue'
 
@@ -145,7 +144,7 @@ nnoremap [ <C-W>
 nnoremap [d :bp\|bd #<CR>
 
 " Toggle buffers
-" nnoremap [[ <C-^>
+nnoremap [[ <C-^>
 
 " Plugin dependent
 " -----------------------------------------------------------
@@ -189,7 +188,8 @@ tnoremap dk <C-\><C-N>
 " Append ; at end of line
 " nnoremap <leader>; A;<Esc>
 
-" console.log mappings for normal and visual mode
+" console.log mappings
+" inoremap cll console.log('');<Esc>hhi
 " nnoremap <Leader>L "ayiwOconsole.log('<C-R>a:', <C-R>a);<Esc>
 " xnoremap <Leader>L "ayOconsole.log('<C-R>a:', <C-R>a);<Esc>
 " nnoremap <Leader>l "ayiwoconsole.log('<C-R>a:', <C-R>a);<Esc>
@@ -198,42 +198,35 @@ tnoremap dk <C-\><C-N>
 " Change js filetype to jsx (React)
 " autocmd BufNewFile,BufRead *.js set ft=javascript.jsx
 
+" Format JSON
+" nnoremap <Leader>j :%!python -m json.tool
+
 " -----------------------------------------------------------
 " MISC
 " -----------------------------------------------------------
 
-" Allows using multiple files in the same window without 
+" Allows using multiple files in the same window without
 " splits or tabs by allowing one to hide a buffer without
 " saving it first.
 set hidden
-" Alternatives include
-" set autowriteall
 
-" Show partial commands in the last line of the screen
-set showcmd
+" Use 4 spaces instead of tabs
+" Does not impact vim-sleuth
+set expandtab
+set tabstop=4
+set shiftwidth=4
 
 " Use case insensitive search, except when using caps
 set ignorecase
 set smartcase
 
-" When opening a new line without filetype-specific
-" indentation, keep the same indent as the line you're
-" currently on
-set autoindent
-
 " Stop certain movements from always going to first
 " character of the line
 set nostartofline
 
-" Display the cursor position in the status line
-set ruler
-
 " Highlight the 101st char of lines
 " highlight ColorColumn guibg=#303030
 " call matchadd('ColorColumn', '\%101v', 100)
-
-" Always display the status line, even with one window
-set laststatus=2
 
 " Instead of failing a command because of unsaved changes,
 " prompt to save
@@ -249,6 +242,12 @@ set cmdheight=2
 " Display line numbers on left
 set number relativenumber
 
+" Give a little more time on keycodes
+set ttimeoutlen=200
+
+" Save tab info between sessions
+set sessionoptions+=tabpages,globals
+
 " Display only absolute line numbers when window is not focused
 " (still buggy with nvim terminal)
 " augroup numbertoggle
@@ -256,12 +255,6 @@ set number relativenumber
 "     autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
 "     autocmd BufLeave,FocusLost,InsertEnter * set norelativenumber
 " augroup END
-
-" Quickly timeout on keycodes, but never on mappings
-set notimeout ttimeout ttimeoutlen=200
-
-" Use <F11> to toggle between 'paste' and 'nopaste'
-set pastetoggle=<F11>
 
 " Folding
 " -----------------------------------------------------------
