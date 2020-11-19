@@ -242,8 +242,8 @@ set cmdheight=2
 " Display line numbers on left
 set number relativenumber
 
-" Give a little more time on keycodes
-set ttimeoutlen=200
+" Give more time on key sequences
+set notimeout ttimeoutlen=200
 
 " Save tab info between sessions
 set sessionoptions+=tabpages,globals
