@@ -5,15 +5,26 @@
 source ~/.config/zsh/antibody/antibody.sh
 
 # Aliases
-alias home="cd ~"
 alias pls="sudo"
 alias vim="nvim"
 alias vims="nvim -S"
 alias vimc="nvim ~/.config/nvim/init.lua"
+alias vimz="nvim ~/.zshrc"
 # Exa must be installed separately
 # It can be found here: https://github.com/ogham/exa
-alias ls="exa --oneline"
+alias ls="exa -l --git"
 alias dot="git --git-dir=$HOME/.dots/ --work-tree=$HOME"
+# Git
+alias glo="git log --oneline"
+alias gcm="git commit -m"
+alias gap="git add -p"
+alias ga="git add"
+alias gs="git status -sb"
+alias gsl="git status"
+alias gco="git checkout"
+alias gst="git stash"
+alias gd="git diff"
+alias gb="git branch"
 
 # Options
 setopt autocd
@@ -33,3 +44,9 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+# Load Git completion
+zstyle ':completion:*:*:git:*' script ~/.config/zsh/git-completion.bash
+fpath=(~/.config/zsh $fpath)
+
+autoload -Uz compinit && compinit
