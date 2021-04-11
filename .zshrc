@@ -7,9 +7,9 @@ source ~/.config/zsh/antibody/antibody.sh
 # Aliases
 alias home="cd ~"
 alias pls="sudo"
-alias vim="nvim" 
+alias vim="nvim"
 alias vims="nvim -S"
-alias vimc="nvim ~/.config/nvim/init.vim"
+alias vimc="nvim ~/.config/nvim/init.lua"
 # Exa must be installed separately
 # It can be found here: https://github.com/ogham/exa
 alias ls="exa --oneline"
