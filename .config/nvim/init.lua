@@ -67,6 +67,7 @@ paq 'junegunn/vim-peekaboo'
 paq 'junegunn/rainbow_parentheses.vim'
 
 -- Language specific plugins
+paq 'rafcamlet/nvim-luapad'
 paq 'ap/vim-css-color'
 paq 'pangloss/vim-javascript'
 paq 'mxw/vim-jsx'
@@ -76,6 +77,7 @@ paq {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install'}
 -- Utility plugins
 paq 'nvim-lua/popup.nvim'
 paq 'nvim-lua/plenary.nvim'
+paq 'tweekmonster/startuptime.vim'
 
 -- Plugin configuration
 -------------------------------------------------------------
@@ -126,7 +128,6 @@ require'compe'.setup {
     -- spell = true;
     nvim_lsp = true;
     nvim_lua = true;
-    vsnip = true;
   };
 }
 
@@ -149,8 +150,6 @@ end
 _G.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-n>"
-  elseif vim.fn.call("vsnip#available", {1}) == 1 then
-    return t "<Plug>(vsnip-expand-or-jump)"
   elseif check_back_space() then
     return t "<Tab>"
   else
@@ -160,8 +159,6 @@ end
 _G.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-p>"
-  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-    return t "<Plug>(vsnip-jump-prev)"
   else
     return t "<S-Tab>"
   end
@@ -209,6 +206,9 @@ g['mkdp_auto_close'] = 0
 
 -- Statusline & colors
 -------------------------------------------------------------
+-- Prevent defaults from overriding custom colors
+g['syntax_cmd'] = 'skip'
+
 -- Lualine
 require'lualine'.setup {
   options = {
@@ -247,6 +247,12 @@ g['mapleader'] = " "
 
 -- Easier to reach window management
 map('n', '<BS>', '<C-W>', {noremap = false})
+map('n', '<Left>', '<C-W>h')
+map('n', '<Down>', '<C-W>j')
+map('n', '<Up>', '<C-W>k')
+map('n', '<Right>', '<C-W>l')
+map('n', '<End>', '<C-W>v')
+map('n', '<Home>', '<C-W>s')
 
 -- Exit insert mode
 map('i', 'jk', '<Esc>')
@@ -262,8 +268,7 @@ map('', '<C-C>', '"*y')
 map('n', '<leader>ot', ':tabe<CR>:term<CR>:TabooRename term<CR>i')
 
 -- For writing prose
--- FIXME: how to call lua function from mapping
--- map('n', '<leader>p', ':call ProseMode()<CR>')
+map('n', '<leader>p', '<cmd> lua prose()<CR>')
 
 -- Manually resync syntax highlighting
 map('n', '<leader>r', ':syntax sync fromstart<CR>')
@@ -314,17 +319,17 @@ map('t', 'dk', '<C-\\><C-N>')
 map('n', '<leader>;', 'A;<Esc>')
 
 -- console.log mappings
--- map('i', 'cll', 'console.log(\'\');<Esc>hhi')
--- map('n', '<Leader>L' '"ayiwOconsole.log(\'<C-R>a:\', <C-R>a);<Esc>')
--- map('x', '<Leader>L', '"ayOconsole.log(\'<C-R>a:\', <C-R>a);<Esc>')
--- map('n', '<Leader>l' '"ayiwoconsole.log(\'<C-R>a:\', <C-R>a);<Esc>')
--- map('x', '<Leader>l' '"ayoconsole.log(\'<C-R>a:\', <C-R>a);<Esc>')
+map('i', 'cll', 'console.log(\'\');<Esc>hhi')
+map('n', '<leader>L', '"ayiwOconsole.log(\'<C-R>a:\', <C-R>a);<Esc>')
+map('x', '<leader>L', '"ayOconsole.log(\'<C-R>a:\', <C-R>a);<Esc>')
+map('n', '<leader>l', '"ayiwoconsole.log(\'<C-R>a:\', <C-R>a);<Esc>')
+map('x', '<leader>l', '"ayoconsole.log(\'<C-R>a:\', <C-R>a);<Esc>')
 
 -- Change js filetype to jsx (React)
 cmd 'autocmd BufNewFile,BufRead *.js set ft=javascript.jsx'
 
 -- Format JSON
-map('n', '<Leader>j', ':%!python -m json.tool<CR>', {silent = false})
+map('n', '<Leader>j', ':%!python -m json.tool<CR>:set filetype=json<CR>', {silent = false})
 
 -------------------------------------------------------------
 -- MISC
@@ -382,42 +387,34 @@ opt('o', 'sessionoptions', ',globals', true)
 -- Folding
 -------------------------------------------------------------
 -- Establish folds based on indentation
-opt('w', 'foldmethod', 'indent')
+-- opt('w', 'foldmethod', 'indent')
 
 -- Start with folds open
-cmd 'autocmd BufWinEnter * let &foldlevel = max(map(range(1, line(\'$\')), \'foldlevel(v:val)\'))'
+-- cmd 'autocmd BufWinEnter * let &foldlevel = max(map(range(1, line(\'$\')), \'foldlevel(v:val)\'))'
 
--- Whitespace
+-- List Chars
 -------------------------------------------------------------
---  Show whitespace markings initially
+--  Show list chars initially
 opt('w', 'list', true)
-opt('o', 'listchars', '')
+opt('o', 'listchars', 'trail:~,tab:| ,extends:>')
 
--- Don't show whitespace in insert mode
+-- Don't show list chars in insert mode
 cmd 'autocmd InsertLeave * set list'
 cmd 'autocmd InsertEnter * set nolist'
-
--- Trailing whitespace char
-opt('o', 'listchars', 'trail:~', true)
-
--- Tab chars
-opt('o', 'listchars', ',tab:| ', true)
-
--- Sidescroll char
-opt('o', 'listchars', ',extends:>', true)
 
 -------------------------------------------------------------
 -- CUSTOM FUNCTIONS
 -------------------------------------------------------------
 
 -- For writing prose
-local function prose()
+function prose()
   -- Maps for moving within lines
   map('n', 'j', 'gj')
   map('n', 'k', 'gk')
   map('v', 'j', 'gj')
   map('v', 'k', 'gk')
-  cmd 'Goyo'
+  cmd ':Goyo'
+  opt('w', 'wrap', true)
   opt('w', 'lbr', true)
 end
 
@@ -438,25 +435,25 @@ local on_attach = function(client, bufnr)
   local opts = { noremap=true, silent=true }
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  -- buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  -- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  -- buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  -- buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  -- buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  -- buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  -- buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+    buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 
   -- Set autocommands conditional on server_capabilities
@@ -465,18 +462,19 @@ local on_attach = function(client, bufnr)
       hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
     ]], false)
+    -- v this v goes in ^ this block ^
+    -- augroup lsp_document_highlight
+    --   autocmd! * <buffer>
+    --   autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+    --   autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    -- augroup END
   end
 end
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "tsserver" }
+local servers = { "tsserver", "elmls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end

@@ -12,8 +12,10 @@ alias vimc="nvim ~/.config/nvim/init.lua"
 alias vimz="nvim ~/.zshrc"
 # Exa must be installed separately
 # It can be found here: https://github.com/ogham/exa
-alias ls="exa -l --git"
+alias ls="exa -l --no-time --no-filesize --no-permissions --no-user --git"
 alias dot="git --git-dir=$HOME/.dots/ --work-tree=$HOME"
+alias bat="bat --theme=base16-256"
+alias man="batman"
 # Git
 alias glo="git log --oneline"
 alias gcm="git commit -m"
@@ -25,6 +27,7 @@ alias gco="git checkout"
 alias gst="git stash"
 alias gd="git diff"
 alias gb="git branch"
+alias grbi="git rebase --interactive"
 
 # Options
 setopt autocd
