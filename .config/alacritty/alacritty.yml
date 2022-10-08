@@ -87,10 +87,10 @@ font:
        #- (macOS) Menlo
        #- (Linux) monospace
        #- (Windows) Consolas
-    family: "Tamsyn8x17"
+    family: "FiraCode Nerd Font"
 
     # The `style` can be specified to pick a specific face.
-    #style: Regular
+    # style: "Thin"
 
   # Bold font face
   #bold:
@@ -115,7 +115,7 @@ font:
     #style: Italic
 
   # Point size
-  size: 17.0
+  size: 15.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -149,75 +149,112 @@ font:
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: false
 
-
-# Colors (Dracula)
+# Colors (Catppuccin!)
 colors:
   # Default colors
   primary:
-    background: '0x303030'
-    foreground: '0xf8f8f2'
+    background: '0x1E1D2F'
+    foreground: '0xD9E0EE'
 
-    # Bright and dim foreground colors
-    #
-    # The dimmed foreground color is calculated automatically if it is not present.
-    # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
-    # is `false`, the normal foreground color will be used.
-    #dim_foreground: '0x9a9a9a'
-    #bright_foreground: '0xffffff'
-
-  # Cursor colors
-  #
-  # Colors which should be used to draw the terminal cursor. If these are unset,
-  # the cursor color will be the inverse of the cell color.
+  # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
-    text: '0x44475a'
-    cursor: '0xf8f8f2'
+    text: '0x1E1D2F'
+    cursor: '0xF5E0DC'
 
   # Normal colors
   normal:
-    black:   '0x000000'
-    red:     '0xff5555'
-    green:   '0x50fa7b'
-    yellow:  '0xf1fa8c'
-    blue:    '0xbd93f9'
-    magenta: '0xff79c6'
-    cyan:    '0x8be9fd'
-    white:   '0xbfbfbf'
+    black:   '0x6E6C7E'
+    red:     '0xF28FAD'
+    green:   '0xABE9B3'
+    yellow:  '0xFAE3B0'
+    blue:    '0x96CDFB'
+    magenta: '0xF5C2E7'
+    cyan:    '0x89DCEB'
+    white:   '0xD9E0EE'
 
   # Bright colors
   bright:
-    black:   '0x4d4d4d'
-    red:     '0xff6e67'
-    green:   '0x5af78e'
-    yellow:  '0xf4f99d'
-    blue:    '0xcaa9fa'
-    magenta: '0xff92d0'
-    cyan:    '0x9aedfe'
-    white:   '0xe6e6e6'
+    black:   '0x988BA2'
+    red:     '0xF28FAD'
+    green:   '0xABE9B3'
+    yellow:  '0xFAE3B0'
+    blue:    '0x96CDFB'
+    magenta: '0xF5C2E7'
+    cyan:    '0x89DCEB'
+    white:   '0xD9E0EE'
 
-  # Dim colors
-  #
-  # If the dim colors are not set, they will be calculated automatically based
-  # on the `normal` colors.
-  dim:
-    black:   '0x14151b'
-    red:     '0xff2222'
-    green:   '0x1ef956'
-    yellow:  '0xebf85b'
-    blue:    '0x4d5b86'
-    magenta: '0xff46b0'
-    cyan:    '0x59dffc'
-    white:   '0xe6e6d1'
+  indexed_colors:
+    - { index: 16, color: '0xF8BD96' }
+    - { index: 17, color: '0xF5E0DC' }
 
-  # Indexed Colors
-  #
-  # The indexed colors include all colors from 16 to 256.
-  # When these are not set, they're filled with sensible defaults.
-  #
-  # Example:
-  #   `- { index: 16, color: '0xff00ff' }`
-  #
-  indexed_colors: []
+## Colors (Dracula)
+#colors:
+#  # Default colors
+#  primary:
+#    background: '0x303030'
+#    foreground: '0xf8f8f2'
+
+#    # Bright and dim foreground colors
+#    #
+#    # The dimmed foreground color is calculated automatically if it is not present.
+#    # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
+#    # is `false`, the normal foreground color will be used.
+#    #dim_foreground: '0x9a9a9a'
+#    #bright_foreground: '0xffffff'
+
+#  # Cursor colors
+#  #
+#  # Colors which should be used to draw the terminal cursor. If these are unset,
+#  # the cursor color will be the inverse of the cell color.
+#  cursor:
+#    text: '0x44475a'
+#    cursor: '0xf8f8f2'
+
+#  # Normal colors
+#  normal:
+#    black:   '0x000000'
+#    red:     '0xff5555'
+#    green:   '0x50fa7b'
+#    yellow:  '0xf1fa8c'
+#    blue:    '0xbd93f9'
+#    magenta: '0xff79c6'
+#    cyan:    '0x8be9fd'
+#    white:   '0xbfbfbf'
+
+#  # Bright colors
+#  bright:
+#    black:   '0x4d4d4d'
+#    red:     '0xff6e67'
+#    green:   '0x5af78e'
+#    yellow:  '0xf4f99d'
+#    blue:    '0xcaa9fa'
+#    magenta: '0xff92d0'
+#    cyan:    '0x9aedfe'
+#    white:   '0xe6e6e6'
+
+#  # Dim colors
+#  #
+#  # If the dim colors are not set, they will be calculated automatically based
+#  # on the `normal` colors.
+#  dim:
+#    black:   '0x14151b'
+#    red:     '0xff2222'
+#    green:   '0x1ef956'
+#    yellow:  '0xebf85b'
+#    blue:    '0x4d5b86'
+#    magenta: '0xff46b0'
+#    cyan:    '0x59dffc'
+#    white:   '0xe6e6d1'
+
+#  # Indexed Colors
+#  #
+#  # The indexed colors include all colors from 16 to 256.
+#  # When these are not set, they're filled with sensible defaults.
+#  #
+#  # Example:
+#  #   `- { index: 16, color: '0xff00ff' }`
+#  #
+#  indexed_colors: []
 
  #Colors (Tomorrow Night Bright)
 #colors:
@@ -332,28 +369,6 @@ mouse:
 
   # If this is `true`, the cursor is temporarily hidden when typing.
   hide_when_typing: false
-
-  url:
-    # URL launcher
-    #
-    # This program is executed when clicking on a text which is recognized as a URL.
-    # The URL is always added to the command as the last parameter.
-    #
-    # When set to `None`, URL launching will be disabled completely.
-    #
-    # Default:
-    #   - (macOS) open
-    #   - (Linux) xdg-open
-    #   - (Windows) explorer
-    #launcher:
-    #  program: xdg-open
-    #  args: []
-
-    # URL modifiers
-    #
-    # These are the modifiers that need to be held down for opening URLs when clicking
-    # on them. The available modifiers are documented in the key binding section.
-    modifiers: None
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"

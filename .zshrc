@@ -16,11 +16,27 @@ alias ls="exa -l --no-time --no-filesize --no-permissions --no-user --git"
 alias dot="git --git-dir=$HOME/.dots/ --work-tree=$HOME"
 alias bat="bat --theme=base16-256"
 alias man="batman"
+alias rg="rg -S"
+alias rns="npx react-native start"
+alias rnr="npx react-native run-ios"
 # Git
+ga() {
+    if [ "$#" -eq 0 ]; then
+        git add .
+    else
+        for file in "$@"
+        do
+            git add "$file"
+        done
+    fi
+    git status -sb
+}
+alias gap="git add -p"
 alias glo="git log --oneline"
 alias gcm="git commit -m"
-alias gap="git add -p"
-alias ga="git add"
+alias gca="git commit --amend"
+alias gcp="git commit --amend --no-edit"
+alias gau="git add -u"
 alias gs="git status -sb"
 alias gsl="git status"
 alias gco="git checkout"
@@ -28,6 +44,7 @@ alias gst="git stash"
 alias gd="git diff"
 alias gb="git branch"
 alias grbi="git rebase --interactive"
+alias glr="git remote -v"
 
 # Options
 setopt autocd
@@ -43,13 +60,18 @@ prompt pure
 
 # Base16 Shell must be installed separately
 # It can be found here: https://github.com/chriskempson/base16-shell
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
+# BASE16_SHELL="$HOME/.config/base16-shell/"
+# [ -n "$PS1" ] && \
+#     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+#         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 # Load Git completion
 zstyle ':completion:*:*:git:*' script ~/.config/zsh/git-completion.bash
 fpath=(~/.config/zsh $fpath)
 
 autoload -Uz compinit && compinit
+
+# Stuff for ani-cli on Mac
+# Probably don't commit this
+export PATH="/usr/local/opt/util-linux/bin:$PATH"
+export PATH="/usr/local/opt/util-linux/sbin:$PATH"
