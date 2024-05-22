@@ -20,17 +20,16 @@
   (vim.cmd "command! LspDiagLine lua vim.diagnostic.open_float()")
   (vim.cmd "command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
 
-  (let [buf-map vim.api.nvim_buf_set_keymap
-                opts {:noremap true :silent true}]
-    (buf-map bufnr :n :gd ":LspDef<CR>" opts)
-    ;; buf-map(bufnr, "n", "gr", ":LspRename<CR>")
-    ;; buf-map(bufnr, "n", "gy", ":LspTypeDef<CR>")
-    (buf-map bufnr :n :K ":LspHover<CR>" opts)
-    (buf-map bufnr :n "[d" ":LspDiagPrev<CR>" opts)
-    (buf-map bufnr :n "]d" ":LspDiagNext<CR>" opts)
-    (buf-map bufnr :n :ga ":LspCodeAction<CR>" opts)
-    ;; buf-map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>")
-    ;; buf-map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>")
+  (let [opts {:buffer bufnr}]
+    (map :n :gd ":LspDef<CR>" opts)
+    ;; map("n", "gr", ":LspRename<CR>")
+    ;; map("n", "gy", ":LspTypeDef<CR>")
+    (map :n :K ":LspHover<CR>" opts)
+    (map :n "[d" ":LspDiagPrev<CR>" opts)
+    (map :n "]d" ":LspDiagNext<CR>" opts)
+    (map :n :ga ":LspCodeAction<CR>" opts)
+    ;; map("n", "<Leader>a", ":LspDiagLine<CR>")
+    ;; map("i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>")
     (when client.server_capabilities.document_formatting
       (vim.cmd "autocmd BufWritePre <buffer> lua vim.lsp.buf.format()"))))
 
